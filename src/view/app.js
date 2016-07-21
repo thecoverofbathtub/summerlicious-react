@@ -3,6 +3,12 @@ import { connect } from 'react-redux';
 import { restaurantDetailsActions } from '../core/restaurant-details';
 
 export class App extends Component {
+    constructor(props, context) {
+        super(props, context);
+        this.isPropertyDescending = {};
+        this.sortDetailsByProperty = this.sortDetailsByProperty.bind(this);
+    }
+
     componentWillMount() {
         this.props.loadRestaurantDetails();
     }
@@ -14,9 +20,15 @@ export class App extends Component {
             <table>
             <thead>
                 <tr>
-                    <th>Restaurant Name</th>
-                    <th>Yelp Rating</th>
-                    <th>Yelp Review Count</th>
+                    <th><a href="#" onClick={this.sortDetailsByProperty('name')}>
+                        Restaurant Name
+                    </a></th>
+                    <th><a href="#" onClick={this.sortDetailsByProperty('stars')}>
+                        Yelp Rating
+                    </a></th>
+                    <th><a href="#" onClick={this.sortDetailsByProperty('count')}>
+                        Yelp Review Count
+                    </a></th>
                     <th>Yelp Link</th>
                 </tr>
             </thead>
@@ -27,7 +39,7 @@ export class App extends Component {
                         <td>{i.name}</td>
                         <td>{i.stars}</td>
                         <td>{i.count}</td>
-                        <td><a href={i.url}>Link</a></td>
+                        <td><a href={i.url} target="_blank">Link</a></td>
                     </tr>
                 )
             }
@@ -35,6 +47,18 @@ export class App extends Component {
             </table>
             </div>
         );
+    }
+
+    sortDetailsByProperty(property) {
+        const { isPropertyDescending } = this;
+        const { restaurantDetails } = this.props;
+        isPropertyDescending[property] = !isPropertyDescending[property];
+        return () => {
+            restaurantDetails.sort((a, b) => {
+                let pa = a[property], pb = b[property];
+                return (isPropertyDescending[property] ? -1 : 1) * (pa === pb ? 0 : (pa < pb ? -1 : 1));
+            });
+        };
     }
 }
 

@@ -17,6 +17,7 @@ const config = {
         main: [
             `webpack-dev-server/client?http://${HOST}:${PORT}`,
             'webpack/hot/only-dev-server',
+            'webpack/hot/only-dev-server',
             'babel-polyfill',
             './src/main.js'
         ]
@@ -26,6 +27,9 @@ const config = {
             test: /\.js$/,
             exclude: /(node_modules|bower_components)/,
             loaders: ['react-hot', 'babel']
+        }, {
+            test: /\.scss$/,
+            loader: 'style!css!sass'
         }]
     },
     output: {
@@ -42,7 +46,12 @@ const config = {
             inject: 'body',
             template: './src/index.html'
         })
-    ]
+    ],
+    sassLoader: {
+        outputStyle: 'compressed',
+        precision: 10,
+        sourceComments: false
+    }
 };
 
 module.exports = config;
