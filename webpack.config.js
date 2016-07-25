@@ -40,7 +40,7 @@ const config = {
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
         new HtmlWebpackPlugin({
-            favicon: './assets/favicon.png',
+            favicon: './src/assets/favicon.png',
             filename: 'index.html',
             hash: false,
             inject: 'body',
