@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "build": "webpack --display-chunks --progress --colors",
-    "clean": "del-cli ./build",
+    "clean": "del-cli ./dist",
     "lint": "eslint -c .eslintrc.yml *.js ./src ./server",
     "prebuild": "npm-run-all clean lint test",
     "start": "webpack-dev-server --port 3000 --progress --colors",
