@@ -17,7 +17,6 @@ const config = {
         main: [
             `webpack-dev-server/client?http://${HOST}:${PORT}`,
             'webpack/hot/only-dev-server',
-            'webpack/hot/only-dev-server',
             'babel-polyfill',
             './src/main.js'
         ]
