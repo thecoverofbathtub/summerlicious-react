@@ -55,7 +55,7 @@ export class App extends Component {
         isPropertyDescending[property] = !isPropertyDescending[property];
         return () => {
             restaurantDetails.sort((a, b) => {
-                let pa = a[property], pb = b[property];
+                const pa = a[property], pb = b[property];
                 return (isPropertyDescending[property] ? -1 : 1) * (pa === pb ? 0 : (pa < pb ? -1 : 1));
             });
         };
