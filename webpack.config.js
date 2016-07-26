@@ -12,7 +12,6 @@ const PORT = process.env.PORT || 3000;
 //  CONFIG
 //---------------------------------------------------------
 const config = {
-    devtool: 'source-map',
     entry: {
         main: [
             `webpack-dev-server/client?http://${HOST}:${PORT}`,
@@ -52,5 +51,23 @@ const config = {
         sourceComments: false
     }
 };
+
+if (process.env.NODE_ENV === 'production') {
+    config.plugins.push(
+        new webpack.DefinePlugin({
+            'process.env': {
+                NODE_ENV: '"production"'
+            }
+        }),
+        new webpack.optimize.UglifyJsPlugin({
+            compress: {
+                warnings: false
+            }
+        }),
+        new webpack.optimize.OccurenceOrderPlugin()
+    );
+} else {
+    config.devtool = '#source-map';
+}
 
 module.exports = config;
