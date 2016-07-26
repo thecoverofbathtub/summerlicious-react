@@ -12,31 +12,38 @@ const PORT = process.env.PORT || 3000;
 //  CONFIG
 //---------------------------------------------------------
 const config = {
+    devtool: 'source-map',
     entry: {
         main: [
-            `webpack-dev-server/client?http://${HOST}:${PORT}`,
-            'webpack/hot/only-dev-server',
-            'babel-polyfill',
             './src/main.js'
         ]
     },
     module: {
-        loaders: [{
-            test: /\.js$/,
-            exclude: /(node_modules|bower_components)/,
-            loaders: ['react-hot', 'babel']
-        }, {
-            test: /\.scss$/,
-            loader: 'style!css!sass'
-        }]
+        loaders: [
+            {
+                test: /\.js$/,
+                exclude: /(node_modules|bower_components)/,
+                loaders: ['react-hot', 'babel']
+            },
+            {
+                test: /\.scss$/,
+                loader: 'style!css!sass'
+            },
+            {
+                test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+                loader: 'url',
+                query: {
+                    limit: 10000
+                }
+            }
+        ]
     },
     output: {
-        filename: 'bundle.js',
         path: path.resolve('./dist'),
-        publicPath: '/'
+        publicPath: '/',
+        filename: 'bundle.js'
     },
     plugins: [
-        new webpack.HotModuleReplacementPlugin(),
         new HtmlWebpackPlugin({
             favicon: './src/assets/favicon.png',
             filename: 'index.html',
@@ -66,7 +73,17 @@ if (process.env.NODE_ENV === 'production') {
         }),
         new webpack.optimize.OccurenceOrderPlugin()
     );
-} else {
+}
+
+if (process.env.NODE_ENV === 'development') {
+    config.entry.main.unshift(
+        `webpack-dev-server/client?http://${HOST}:${PORT}`,
+        'webpack/hot/only-dev-server',
+        'babel-polyfill'
+    );
+    config.plugins.unshift(
+        new webpack.HotModuleReplacementPlugin()
+    );
     config.devtool = '#source-map';
 }
 
